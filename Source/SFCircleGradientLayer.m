@@ -99,6 +99,8 @@
 - (void)drawInContext:(CGContextRef)ctx
 {
     [super drawInContext:ctx];
+    
+    
     [self drawWithSegmentNumber:_numSegments - 1 context:ctx];
     [self drawWithSegmentNumber:_numSegments context:ctx];
 }
@@ -112,6 +114,8 @@
     [_startColor getRed:&c1[0] green:&c1[1] blue:&c1[2] alpha:&c1[3]];
     CGFloat c2[4];
     [_endColor getRed:&c2[0] green:&c2[1] blue:&c2[2] alpha:&c2[3]];
+    
+    [self drawBackraoundRing:centerPoint from:_startAngle to:_endAngle radius:_circleRadius width:_circleWidth context:ctx];
     
     UIColor *fromColor = self.startColor;
     float endAngle = self.startAngle + (self.endAngle - self.startAngle) * self.progress;
@@ -133,7 +137,23 @@
         fromColor = toColor;
     }
 }
-
+- (void)drawBackraoundRing:(CGPoint)center
+                      from:(CGFloat)startAngle
+                        to:(CGFloat)endAngle
+                    radius:(CGFloat)radius
+                     width:(CGFloat)width
+                   context:(CGContextRef)ctx {
+    CGContextSaveGState(ctx);
+    CGContextSetLineWidth(ctx, width);
+    CGContextSetStrokeColorWithColor(ctx, UIColor.grayColor.CGColor);
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path addArcWithCenter:center radius:radius - width * 0.5f startAngle:startAngle endAngle:endAngle clockwise:YES];
+    CGContextAddPath(ctx, path.CGPath);
+    CGContextStrokePath(ctx);
+    
+    CGContextRestoreGState(ctx);
+    
+}
 - (void)drawSegmentAtCenter:(CGPoint)center
                        from:(CGFloat)startAngle
                          to:(CGFloat)endAngle
