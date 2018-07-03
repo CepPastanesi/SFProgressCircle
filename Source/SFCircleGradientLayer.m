@@ -48,6 +48,7 @@
         self.numSegments = layer.numSegments;
         self.circleRadius = layer.circleRadius;
         self.circleWidth = layer.circleWidth;
+        self.backroundCircleColor = layer.backroundCircleColor;
     }
     return self;
 }
@@ -75,7 +76,11 @@
     _progress = MAX(0, MIN(1, progress));
     [self setNeedsDisplay];
 }
-
+- (void)setBackroundCircleColor:(UIColor *)backroundCircleColor
+{
+    _backroundCircleColor = backroundCircleColor;
+    [self setNeedsDisplay];
+}
 + (BOOL)needsDisplayForKey:(NSString *)key
 {
     if ([key isEqualToString:@"startColor"]) {
@@ -114,8 +119,9 @@
     [_startColor getRed:&c1[0] green:&c1[1] blue:&c1[2] alpha:&c1[3]];
     CGFloat c2[4];
     [_endColor getRed:&c2[0] green:&c2[1] blue:&c2[2] alpha:&c2[3]];
-    
+    if (_backroundCircleColor != nil) {
     [self drawBackraoundRing:centerPoint from:_startAngle to:_endAngle radius:_circleRadius width:_circleWidth context:ctx];
+    }
     
     UIColor *fromColor = self.startColor;
     float endAngle = self.startAngle + (self.endAngle - self.startAngle) * self.progress;
@@ -145,7 +151,7 @@
                    context:(CGContextRef)ctx {
     CGContextSaveGState(ctx);
     CGContextSetLineWidth(ctx, width);
-    CGContextSetStrokeColorWithColor(ctx, UIColor.grayColor.CGColor);
+    CGContextSetStrokeColorWithColor(ctx, _backroundCircleColor.CGColor);
     UIBezierPath *path = [UIBezierPath bezierPath];
     [path addArcWithCenter:center radius:radius - width * 0.5f startAngle:startAngle endAngle:endAngle clockwise:YES];
     CGContextAddPath(ctx, path.CGPath);

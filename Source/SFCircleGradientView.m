@@ -65,7 +65,6 @@
     _gradientLayer = [self progressLayer];
     _gradientLayer.startColor = [UIColor blackColor];
     _gradientLayer.endColor = [UIColor greenColor];
-    
     [self updateLayerData:frame];
     
     self.progress = 1;
@@ -83,7 +82,11 @@
     _lineWidth = value;
     [self updateLayerData:self.frame];
 }
-
+- (void)setBackroundCircleColor:(UIColor *)backroundCircleColor
+{
+    _backroundCircleColor = backroundCircleColor;
+    _gradientLayer.backroundCircleColor = backroundCircleColor;
+}
 - (void)setStartColor:(UIColor *)startColor
 {
     _startColor = startColor;

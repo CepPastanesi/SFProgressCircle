@@ -42,6 +42,7 @@
     [_progressView setCenter:self.view.center];
     [_progressView setLineWidth:6];
     [_progressView setProgress:0];
+    [_progressView setBackroundCircleColor:UIColor.blackColor];
     [self.view addSubview:_progressView];
     
     _titleLabel = [[UILabel alloc] initWithFrame:(CGRect){0, 0, 100, 30}];
